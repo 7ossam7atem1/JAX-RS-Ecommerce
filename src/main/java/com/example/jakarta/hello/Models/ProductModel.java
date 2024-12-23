@@ -1,16 +1,16 @@
 package com.example.jakarta.hello.Models;
 
-public class Product {
+public class ProductModel {
     private String name;
     private double price;
     private int quantity;
 
-    public Product(String name, double price, int quantity) {
+    public ProductModel(String name, double price, int quantity) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
     }
-    public Product(){}
+    public ProductModel(){}
 
     public String getName() {
         return name;

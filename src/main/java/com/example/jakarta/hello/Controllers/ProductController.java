@@ -1,7 +1,7 @@
 package com.example.jakarta.hello.Controllers;
 
-import com.example.jakarta.hello.Models.Product;
-import com.example.jakarta.hello.Models.Store;
+import com.example.jakarta.hello.Models.ProductModel;
+import com.example.jakarta.hello.Models.ProductRepository;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -13,12 +13,12 @@ import jakarta.ws.rs.core.Response;
 public class ProductController {
 
 
-    private final Store store = Store.getInstance();
+    private final ProductRepository productRepository = ProductRepository.getInstance();
 
     @POST
     @Path("/add")
-    public Response addProduct(Product product) {
-        String result = store.addProduct(product);
+    public Response addProduct(ProductModel productModel) {
+        String result = productRepository.addProduct(productModel);
 
         if (result.contains("has been added successfully")) {
             return Response.status(Response.Status.CREATED).entity(result).build();
@@ -28,8 +28,8 @@ public class ProductController {
 
     @PUT
     @Path("/update")
-    public Response updateProduct(Product product) {
-        String result = store.updateProduct(product);
+    public Response updateProduct(ProductModel productModel) {
+        String result = productRepository.updateProduct(productModel);
 
         if (result.contains("has been updated successfully")) {
             return Response.ok(result).build();
@@ -40,7 +40,7 @@ public class ProductController {
     @DELETE
     @Path("/delete/{name}")
     public Response deleteProduct(@PathParam("name") String name) {
-        String result = store.deleteProduct(name);
+        String result = productRepository.deleteProduct(name);
 
         if (result.contains("has been removed successfully")) {
             return Response.ok(result).build();
@@ -51,16 +51,16 @@ public class ProductController {
     @GET
     @Path("/search/{name}")
     public Response searchProduct(@PathParam("name") String name) {
-        return store.searchToProduct(name)
-                .map(product -> Response.ok(product).build())
+        return productRepository.searchToProduct(name)
+                .map(productModel -> Response.ok(productModel).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND)
-                        .entity("The product '" + name + "' does not exist in the store.")
+                        .entity("The product '" + name + "' does not exist in the product list.")
                         .build());
     }
 
     @GET
     @Path("/list")
     public Response getAllProducts() {
-        return Response.ok(store.getProducts()).build();
+        return Response.ok(productRepository.getProducts()).build();
     }
 }
